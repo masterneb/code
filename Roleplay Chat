@@ -1,0 +1,84 @@
+package net.xundertale.roleplaychat;
+
+import java.util.ArrayList;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import net.md_5.bungee.api.ChatColor;
+
+public class main extends JavaPlugin implements Listener {
+	
+	 private String prefix = getConfig().getString("Prefix");
+	 
+	 private ArrayList<String> staff = new ArrayList<String>();
+	 
+	 @Override
+	 public void onEnable(){
+		 Bukkit.getServer().getPluginManager().registerEvents(this, this);
+			getConfig().options().copyDefaults(true);
+			saveConfig();
+			
+		
+	 }
+	
+	 	@Override
+		public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	 		
+			String noPerm = getConfig().getString("No Permission");
+			
+			if(label.equalsIgnoreCase("rp")){
+			if(!(sender.hasPermission("masterneb.rpchat"))){
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', noPerm));
+				return true;
+			}
+			Player p = (Player) sender;	
+			
+			if(!staff.contains(p.getName())){
+				staff.add(p.getName());
+				p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&9RP Chat -> §7RP Chat has successfully turned &aON!"));
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user " + p.getName() + " add master.rpchat.recieve");
+				return true;
+			}else if (staff.contains(p.getName())){
+				staff.remove(p.getName());
+				p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&9RP Chat -> §7RP Chat has successfully turned &cOFF!"));
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user " + p.getName() + " remove master.rpchat.recieve");
+				return true;
+			}
+		}	
+			return true;
+	}
+	 @EventHandler
+	 public void onChat(AsyncPlayerChatEvent e){
+		 Player p = e.getPlayer();
+		 if(staff.contains(p.getName())) {
+			 e.setCancelled(true); 
+			 for(Player pl : Bukkit.getOnlinePlayers()){				
+				 if(pl.hasPermission("master.rpchat.recieve")){
+					 String format = getConfig().getString("ChatFormat");
+					 format = format.replaceAll("%player%", p.getName());
+					 format = format.replaceAll("%displayname%", p.getDisplayName());
+					 format = format.replaceAll("%prefix%", prefix);
+					 format = format.replaceAll("%message%", e.getMessage());
+					 pl.sendMessage(ChatColor.translateAlternateColorCodes('&', format));
+				 }
+			 }
+		 }	 
+	 }	
+	 
+	 @EventHandler
+	 public void onPlayerQuit (PlayerQuitEvent q) {
+		 Player p = q.getPlayer();
+		 if(staff.contains(p.getName())) {
+			 staff.remove(p.getName());
+			 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pex user " + p.getName() + " remove master.rpchat.recieve");
+		 }
+	 }
+}
