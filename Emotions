@@ -1,0 +1,207 @@
+package me.ubernation.emotions;
+
+import java.util.logging.Logger;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class Main extends JavaPlugin{
+	public Permission masterhug = new Permission ("ubernation.hug");
+	public Permission masterkiss = new Permission ("ubernation.kiss");
+	public Permission masterslap = new Permission ("ubernation.slap");
+	public Permission mastercry = new Permission ("ubernation.cry");
+	public Permission mastermeow = new Permission ("ubernation.meow");
+	public Permission masterbark = new Permission ("ubernation.bark");
+	public Permission masterimmune = new Permission ("ubernation.immune");
+	private final Logger logger = Bukkit.getLogger();
+	public static Main plugin;
+	
+	@Override
+	public void onEnable() {
+		PluginManager pm = getServer().getPluginManager();
+		pm.addPermission(masterhug);
+		pm.addPermission(masterkiss);
+		pm.addPermission(masterslap);
+		pm.addPermission(mastercry);
+		pm.addPermission(mastermeow);
+		pm.addPermission(masterbark);
+		pm.addPermission(masterimmune);
+		PluginDescriptionFile file = this.getDescription();
+		logger.info("[" + file.getName() + "]" + "Enabling permission node ubernation.hug");
+		logger.info("[" + file.getName() + "]" + "Enabling permission node ubernation.kiss");
+		logger.info("[" + file.getName() + "]" + "Enabling permission node ubernation.slap");
+		logger.info("[" + file.getName() + "]" + "Enabling permission node ubernation.cry");
+		logger.info("[" + file.getName() + "]" + "Enabling permission node ubernation.meow");		
+		logger.info("[" + file.getName() + "]" + "Enabling permission node ubernation.bark");
+		logger.info("[" + file.getName() + "]" + "Enabling permission node ubernation.immune");
+		logger.info("[" + file.getName() + "]" + "Successfully enabled Starting Plugin");
+		logger.info(file.getName()+ " v" + file.getVersion() + " is now enabled");
+		plugin = this;
+	}
+	
+	@Override
+	public void onDisable() {
+		PluginDescriptionFile file = this.getDescription();
+		logger.info("[" + file.getName() + "]" + "Disabling permission node ubernation.hug");
+		logger.info("[" + file.getName() + "]" + "Disabling permission node ubernation.kiss");
+		logger.info("[" + file.getName() + "]" + "Disabling permission node ubernation.slap");
+		logger.info("[" + file.getName() + "]" + "Disabling permission node ubernation.cry");
+		logger.info("[" + file.getName() + "]" + "Disabling permission node ubernation.meow");
+		logger.info("[" + file.getName() + "]" + "Disabling permission node ubernation.bark");
+		logger.info("[" + file.getName() + "]" + "Disabling permission node ubernation.immune");
+		logger.info("[" + file.getName() + "]" + "Successfully Disabled Plugin");
+		logger.info(file.getName() + " is now disabled");
+		plugin = null;	
+	}
+	
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		
+		Player player = (Player) sender;
+
+		//When player does /hug on chat
+		if (cmd.getName().equalsIgnoreCase("hug")) {
+			//If player has permission masterhug
+			if (player.hasPermission(masterhug)) {
+ //Representing that string "length" equals args.length
+				int length = args.length;
+ 				//If length(args.length) equals to 1
+ 				if (length == 1) {
+ 					//Gets all online players
+ 					for (Player playertoHug : Bukkit.getServer().getOnlinePlayers()) {
+ 						//If the 1st argument is a online player
+ 						if(playertoHug.getName().equalsIgnoreCase(args[0])) {
+ //Sends the following message below if arg[0] exists
+ 							playertoHug.sendMessage(ChatColor.AQUA + "❤❤ " + ChatColor.LIGHT_PURPLE + "You have been hugged by " + player.getName() + ChatColor.AQUA + " ❤❤");
+ 							player.sendMessage(ChatColor.AQUA + "❤❤ " + ChatColor.LIGHT_PURPLE + "You have hugged " + playertoHug.getName() + ChatColor.AQUA + " ❤❤");
+ 						//When player inputs the wrong arguments
+ 						}
+					}
+ 				} else player.sendMessage(ChatColor.RED + "[Error] " + ChatColor.AQUA + "Incorrect Arguments. The correct way is /hug [Player]");
+//When player doesnt have perm
+			} else player.sendMessage(ChatColor.RED + " You do not have permission to use this command. If you believe this is an error, Please contact NebTheDev or any of the senior staff members");
+			
+			return true;	
+			//When player does /kiss on chat
+		}
+		if (cmd.getName().equalsIgnoreCase("kiss")) {
+			if (player.hasPermission(masterkiss)) {
+				//When player has permission masterkiss
+ 				int length = args.length;
+ 				//representing string "length" to "args.length"
+ 				if (length == 1) {
+ 					//If args.length equals to 1
+ 					for (Player playertoHug : Bukkit.getServer().getOnlinePlayers()) {
+ 						//Gets online players and represents them as playertoHug
+ 						//Checks if playertoHug is an online player
+ 						if(playertoHug.getName().equalsIgnoreCase(args[0])) {
+ 							//Sends the following message if player indeed exists
+ 							playertoHug.sendMessage(ChatColor.AQUA + "❤❤ " + ChatColor.LIGHT_PURPLE + "You have been kissed by " + player.getName() + ChatColor.AQUA + " ❤❤");
+ 							player.sendMessage(ChatColor.AQUA + "❤❤ " + ChatColor.LIGHT_PURPLE + "You have kissed " + playertoHug.getName() + ChatColor.AQUA + " ❤❤");
+ 							
+ 						
+ 						}
+ 						//When player does the arguments wrong
+					}
+ 				} else player.sendMessage(ChatColor.RED + "[Error] " + ChatColor.AQUA + "Incorrect Arguments. The correct way is /kiss [Player]");
+	//Sends an "you dont have perm" message
+			} else player.sendMessage(ChatColor.RED + " You do not have permission to use this command. If you believe this is an error, Please contact NebTheDev or any of the senior staff members");
+			
+			return true;	
+			
+			
+		}
+		//If player does /cry in chat
+		if (cmd.getName().equalsIgnoreCase("cry")) {
+			if (player.hasPermission(mastercry)) {
+				//If player has permission mastercry
+				player.sendMessage(ChatColor.AQUA + ";-; " + ChatColor.BOLD + "Don't cry" + ChatColor.AQUA + " ;-;");
+ 					for (Player playertoCry : Bukkit.getServer().getOnlinePlayers()) {
+ 						
+ 					//gets online players and calls them playertoCry
+ 						//Sends message
+ 							playertoCry.sendMessage(ChatColor.AQUA + ";-; " + ChatColor.BOLD + player.getName() + ChatColor.GREEN + " is crying " +  ChatColor.AQUA + " ;-;");
+ 							playertoCry.sendMessage(ChatColor.AQUA + "❤❤ " + ChatColor.GREEN + " You should probably hug " + player.getName() + ChatColor.AQUA + " ❤❤");							
+ 						
+ 						
+ 				}
+ 					//No perms message
+			} else player.sendMessage(ChatColor.RED + " You do not have permission to use this command. If you believe this is an error, Please contact NebTheDev or any of the senior staff members");
+			
+			return true;		
+		}
+			if (cmd.getName().equalsIgnoreCase("meow")) {
+				if (player.hasPermission(mastermeow)) {
+					//If player has permission mastercry
+	 					for (Player playertoCry : Bukkit.getServer().getOnlinePlayers()) {
+	 						
+	 					//gets online players and calls them playertoCry
+	 						//Sends message
+	 							playertoCry.sendMessage(ChatColor.GOLD + "[UberNation] " + ChatColor.AQUA + "puurrr~ " + ChatColor.GOLD + player.getName() + ChatColor.AQUA + " is meowing");						
+	 						
+	 						
+	 				}
+	 					//No perms message
+				} else player.sendMessage(ChatColor.RED + " You do not have permission to use this command. If you believe this is an error, Please contact NebTheDev or any of the senior staff members");
+			
+				return true;		
+			}
+			if (cmd.getName().equalsIgnoreCase("bark")) {
+				if (player.hasPermission(masterbark)) {
+					//If player has permission mastercry
+	 					for (Player playertoCry : Bukkit.getServer().getOnlinePlayers()) {
+	 						
+	 					//gets online players and calls them playertoCry
+	 						//Sends message
+	 							playertoCry.sendMessage(ChatColor.GOLD + "[UberNation] "+ ChatColor.AQUA + "Bark! " + ChatColor.GOLD + player.getName() + ChatColor.AQUA + " is barking");						
+	 						
+	 						
+	 				}
+	 					//No perms message
+				} else player.sendMessage(ChatColor.RED + " You do not have permission to use this command. If you believe this is an error, Please contact NebTheDev or any of the senior staff members");
+			
+				return true;		
+			}
+	//When player enters /slap in chat
+		if (cmd.getName().equalsIgnoreCase("slap")) {
+			
+			//If player has perm masterslap
+			if (player.hasPermission(masterslap)) {
+				//Representing length to args.length
+ 				int length = args.length;
+ 				//If args.length equals 1
+ 				
+ 				if (length == 1) {
+ 					//Gathers online players and puts it into playertoHug
+ 					for (Player playertoHug : Bukkit.getServer().getOnlinePlayers()) {
+ 						//Checks if player is online
+ 						if(playertoHug.getName().equalsIgnoreCase(args[0])) {
+ 							//Sends Message
+ 							playertoHug.sendMessage(ChatColor.AQUA + "⚔⚔" + ChatColor.LIGHT_PURPLE + "You have been slapped by " + ChatColor.BOLD + player.getName() + ChatColor.AQUA + " ⚔⚔");
+ 							player.sendMessage(ChatColor.AQUA + "⚔⚔ " + ChatColor.LIGHT_PURPLE + "You have slapped " + playertoHug.getName() + ChatColor.AQUA + " ⚔⚔");
+ 							
+ 						
+ 						}
+					}
+ 					//Incorrect arguments message
+ 				} else player.sendMessage(ChatColor.RED + "[Error] " + ChatColor.AQUA + "Incorrect Arguments. The correct way is /slap [Player]");
+//No perm message
+			} else player.sendMessage(ChatColor.RED + " You do not have permission to use this command. If you believe this is an error, Please contact NebTheDev or any of the senior staff members");
+			
+			return true;	
+			}
+		
+		
+		
+		return false;	
+	}
+
+
+		
+}
